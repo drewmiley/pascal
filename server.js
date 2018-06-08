@@ -79,8 +79,6 @@ router.route('/bears/:bear_id')
 		});
 	});
 
-app.use('/api', router);
-
 // START THE SERVER
 app.use('/api', router);
 app.listen(port);
