@@ -4,7 +4,7 @@ const { dbpassword, dbroute, dbuser } = require('./credentials');
 mongoose.connect(`mongodb://${ dbuser }:${ dbpassword }@${ dbroute }`);
 
 // Get models
-const Bear = require('./app/models/bear');
+const Song = require('./app/models/song');
 
 // Configure app
 const express = require('express');
@@ -24,57 +24,51 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-	res.json({ message: 'hooray! welcome to our api!' });   
+	res.json({ message: 'hooray! welcome to our api!' });
 });
 
-router.route('/bears')
+router.route('/songs')
 	.post((req, res) => {
-		let bear = new Bear();
-		bear.name = req.body.name;
-		bear.save(err => {
-			if (err) {
-				res.send(err);
-			}
-			res.json({ message: 'Bear created!' });
+		let song = new Song();
+		song.title = req.body.title;
+		song.album = req.body.album;
+		song.artist = req.body.artist;
+		song.imageURL = req.body.imageURL;
+		song.save(err => {
+			if (err) {res.send(err);}
+			res.json({ message: 'Song created!' });
 		});
 	})
 	.get((req, res) => {
-		Bear.find((err, bears) => {
-			if (err) {
-				res.send(err);
-			}
-			res.json(bears);
+		Song.find((err, songs) => {
+			if (err) {res.send(err);}
+			res.json(songs);
 		});
 	});
 
-router.route('/bears/:bear_id')
+router.route('/songs/:song_id')
 	.get((req, res) => {
-		Bear.findById(req.params.bear_id, (err, bear) => {
-			if (err) {
-				res.send(err);
-			}
-			res.json(bear);
+		Song.findById(req.params.song_id, (err, song) => {
+			if (err) {res.send(err);}
+			res.json(song);
 		});
 	})
 	.put((req, res) => {
-		Bear.findById(req.params.bear_id, (err, bear) => {
-			if (err) {
-				res.send(err);
-			}
-			bear.name = req.body.name;
-			bear.save(err => {
-				if (err) {
-					res.send(err);
-				}
-				res.json({ message: 'Bear updated!' });
+		Song.findById(req.params.song_id, (err, song) => {
+			if (err) {res.send(err);}
+			song.title = req.body.title;
+			song.album = req.body.album;
+			song.artist = req.body.artist;
+			song.imageURL = req.body.imageURL;
+			song.save(err => {
+				if (err) {res.send(err);}
+				res.json({ message: 'Song updated!' });
 			});
 		});
 	})
 	.delete((req, res) => {
-		Bear.remove({ _id: req.params.bear_id }, (err, bear) => {
-			if (err) {
-				res.send(err);
-			}
+		Song.remove({ _id: req.params.song_id }, (err, song) => {
+			if (err) {res.send(err);}
 			res.json({ message: 'Successfully deleted' });
 		});
 	});
