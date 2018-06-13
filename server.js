@@ -75,6 +75,15 @@ router.route('/songs/:song_id')
 		});
 	});
 
+router.route('/playlist/:pascal')
+	.get((req, res) => {
+		console.log(req.params.pascal);
+		Song.find((err, songs) => {
+			if (err) {res.send(err);}
+			res.json(songs);
+		});
+	});
+
 // START THE SERVER
 app.use('/api', router);
 app.listen(port);
