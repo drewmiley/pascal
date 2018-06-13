@@ -5,6 +5,7 @@ mongoose.connect(`mongodb://${ dbuser }:${ dbpassword }@${ dbroute }`);
 
 // Get models
 const Song = require('./app/models/song');
+const getPlaylist = require('./app/getPlaylist');
 
 // Configure app
 const express = require('express');
@@ -80,7 +81,8 @@ router.route('/playlist/:pascal')
 		console.log(req.params.pascal);
 		Song.find((err, songs) => {
 			if (err) {res.send(err);}
-			res.json(songs);
+			const playlist = getPlaylist(songs, req.params.pascal);
+			res.json(playlist);
 		});
 	});
 
