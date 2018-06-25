@@ -76,6 +76,22 @@ router.route('/songs/:song_id')
 		});
 	});
 
+router.route('/album/:album')
+	.get((req, res) => {
+		Song.find({album: req.params.album}).exec((err, songs) => {
+			if (err) {res.send(err);}
+			res.json(songs);
+		});
+	});
+
+router.route('/artist/:artist')
+	.get((req, res) => {
+		Song.find({artist: req.params.artist}).exec((err, songs) => {
+			if (err) {res.send(err);}
+			res.json(songs);
+		});
+	});
+
 router.route('/playlist/:pascal')
 	.get((req, res) => {
 		console.log(req.params.pascal);
